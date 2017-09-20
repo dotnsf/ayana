@@ -42,6 +42,37 @@ This new API tries to handle compatible input data from original one.
 
 In current code, I use "Color-Histogram" approach to find/judge similarity. See wikipedia for details: https://en.wikipedia.org/wiki/Color_histogram
 
+## Implemented APIs
+
+- GET /v3/collections
+
+- POST /v3/collections
+
+- GET /v3/collections/{collection_id}
+
+- POST /v3/collections/{collection_id}/find_similar
+
+- DELETE /v3/collections/{collection_id}
+
+- GET /v3/collections/{collection_id}/images
+
+- POST /v3/collections/{collection_id}/images
+
+- GET /v3/collections/{collection_id}/images/{image_id}
+
+- GET /v3/collections/{collection_id}/images/{image_id}/binary
+
+
+## Diffence from original
+
+- No API Key required. You can enable Basic Authentication instead if needed.
+
+- No 'version' parameter required.
+
+- GET /collections/{collection_id}/images/{image_id}/binary newly added to get image binary
+
+- HTTP Response include 'status' which indicate success(true) or fail(false).
+
 ## References
 
 - API retirement

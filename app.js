@@ -113,7 +113,7 @@ apiRoutes.get( '/collections/:collection_id', function( req, res ){
         var message = {
           status: true,
           collection_id: collection_id,
-          name: collection_id ,
+          name: collection_id.substring( settings.cloudant_db_prefix.length ),
           //created: body.xxx,
           images: body.doc_count,
           //capacity: (1000000 - body.doc_count),
@@ -250,8 +250,32 @@ apiRoutes.post( '/collections/:collection_id/images', function( req, res ){
   }
 });
 
-//. コレクション画像取得
+//. コレクション画像情報取得
 apiRoutes.get( '/collections/:collection_id/images/:image_id', function( req, res ){
+  var collection_id = req.params.collection_id;
+  var image_id = req.params.image_id;
+  if( collection_id && image_id ){
+    var db = cloudant.db.use( collection_id );
+    db.get( image_id, { include_docs: true }, function( err, body ){
+      if( err ){
+        res.status( 400 );
+        res.write( JSON.stringify( { status: false, message: err }, 2, null ) );
+        res.end();
+      }else{
+        res.write( JSON.stringify( { status: true, image_id: image_id, created: body.datetime, image_file: body.filename, metadata: body.metadata, score: 0 }, 2, null ) );
+        res.end();
+      }
+    });
+  }else{
+    res.status( 400 );
+    res.write( JSON.stringify( { status: false, message: 'parameter: collection_id and image_id required.' }, 2, null ) );
+    res.end();
+  }
+});
+
+
+//. コレクション画像取得
+apiRoutes.get( '/collections/:collection_id/images/:image_id/binary', function( req, res ){
   var collection_id = req.params.collection_id;
   var image_id = req.params.image_id;
   if( collection_id && image_id ){
