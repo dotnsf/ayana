@@ -1,0 +1,22 @@
+{
+    "name": "ayana",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "basic-auth-connect": "1.0.x",
+        "body-parser": "^1.17.2",
+        "canvas": "1.6.7",
+        "cfenv": "~1.0.0",
+        "cloudant": "1.7.x",
+        "ejs": "^2.3.4",
+        "express": "4.1.x",
+        "multer": "^1.1.0"
+    },
+    "repository": {},
+    "engines": {
+        "node": "6.x"
+    }
+}
+
