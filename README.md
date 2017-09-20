@@ -38,6 +38,36 @@ This new API tries to handle compatible input data from original one.
 
 - You can access /v3/xxxxxxx APIs .
 
+## How to find similar images
+
+In current code, I use "Color-Histogram" approach to find/judge similarity. See wikipedia for details: https://en.wikipedia.org/wiki/Color_histogram
+
+## References
+
+- API retirement
+
+    - https://www.ibm.com/blogs/bluemix/2017/08/visual-recognition-api-similarity-search-update
+
+- Original API
+
+    - https://watson-api-explorer.mybluemix.net/apis/visual-recognition-v3#!/
+
+- Color histogram
+
+    - http://yuzurus.hatenablog.jp/entry/search-image
+
+- Cloudant API reference
+
+    - https://docs.cloudant.com/api.html
+
+- Cloudant API reference(nodejs)
+
+    - https://github.com/cloudant/nodejs-cloudant#api-reference
+
+- Node Canvas
+
+    - https://github.com/Automattic/node-canvas
+
 ## Licensing
 
 This code is licensed under MIT.

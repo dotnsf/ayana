@@ -1,17 +1,5 @@
 //. app.js
 
-//. API retirement: https://www.ibm.com/blogs/bluemix/2017/08/visual-recognition-api-similarity-search-update
-
-//. Original API: https://watson-api-explorer.mybluemix.net/apis/visual-recognition-v3#!/
-
-//. Color histogram: http://yuzurus.hatenablog.jp/entry/search-image
-
-//. Cloudant API reference: https://docs.cloudant.com/api.html
-
-//. Cloudant API reference(nodejs): https://github.com/cloudant/nodejs-cloudant#api-reference
-
-//. Canvas: http://qiita.com/EafT/items/d5afef65081b7fdf60cc
-
 var express = require( 'express' ),
     cfenv = require( 'cfenv' ),
     cloudantlib = require( 'cloudant' ),
