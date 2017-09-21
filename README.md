@@ -46,27 +46,55 @@ In current code, I use "Color-Histogram" approach to find/judge similarity. See 
 
 - GET /v3/collections
 
+    - List all custom collections
+
 - POST /v3/collections
+
+    - Create a new collection
 
 - GET /v3/collections/{collection_id}
 
+    - Retrieve collection details
+
 - POST /v3/collections/{collection_id}/find_similar
+
+    - Find similar images
 
 - DELETE /v3/collections/{collection_id}
 
+    - Delete a collection
+
 - GET /v3/collections/{collection_id}/images
+
+    - List 100 images in a collection
 
 - POST /v3/collections/{collection_id}/images
 
+    - Add images to a collection
+
+- DELETE /v3/collections/{collection_id}/images/{image_id}
+
+    - Delete an image
+
 - GET /v3/collections/{collection_id}/images/{image_id}
+
+    - List image details
 
 - GET /v3/collections/{collection_id}/images/{image_id}/binary (new!)
 
+    - Get image binary with content-type header
+
 - DELETE /v3/collections/{collection_id}/images/{image_id}/metadata
+
+    - Delete image metadata
 
 - GET /v3/collections/{collection_id}/images/{image_id}/metadata
 
+    - List image metadata
+
 - PUT /v3/collections/{collection_id}/images/{image_id}/metadata
+
+    - Add metadata to an image
 
 See Watson API Explorer(https://watson-api-explorer.mybluemix.net/apis/visual-recognition-v3#!/) for details.
 
