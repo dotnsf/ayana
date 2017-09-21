@@ -6,7 +6,7 @@ Yet Anohter Similarity Search
 
 Yet Anohter Similarity Search API.
 
-This API has been developed as yet anohter IBM Watson Visual Recognition Similarity Search API, which has been retired in 2017/Sep.
+This API has been developed as yet anohter IBM Watson Visual Recognition Similarity Search API(as beta), which has been retired in 2017/Sep.
 
 This new API tries to handle compatible input data from original one.
 
