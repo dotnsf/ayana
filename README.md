@@ -14,7 +14,7 @@ This new API tries to handle compatible input data from original one.
 
 - You need Cloudant, NoSQL DBaaS, instance. If you don't have one yet, we recommend you to get one from IBM Bluemix(http://bluemix.net/). You need username and password of Cloudant.
 
-- You also need to install node.js and npm.
+- You also need to install node.js and npm in application server.
 
 - This service use node-canvas library. So you need to install dependencies for node-canvas. Follow this page for instructions: 
 
