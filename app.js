@@ -134,6 +134,7 @@ apiRoutes.get( '/collections/:collection_id', function( req, res ){
 apiRoutes.delete( '/collections/:collection_id', function( req, res ){
   var collection_id = req.params.collection_id;
   if( collection_id ){
+    //. K.Kimura（update には _rev パラメータが必要？）
     cloudant.db.destroy( collection_id, function( err, body ){
       if( err ){
         res.status( 400 );
@@ -169,7 +170,7 @@ apiRoutes.get( '/collections/:collection_id/images', function( req, res ){
             created: doc.doc.datetime,
             image_file: doc.doc.filename,
             metadata: doc.doc.metadata,
-            score: doc.doc.colorhistogram //0
+            score: 0 //doc.doc.colorhistogram
           };
           images.push( image );
         });
@@ -188,7 +189,11 @@ apiRoutes.get( '/collections/:collection_id/images', function( req, res ){
 apiRoutes.post( '/collections/:collection_id/images', function( req, res ){
   var collection_id = req.params.collection_id;
   if( collection_id ){
-    var metadata = ( req.body.metadata ? JSON.parse( req.body.metadata ) : {} );
+    var metadata = {};
+    try{
+      metadata = ( req.body.metadata ? JSON.parse( req.body.metadata ) : {} );
+    }catch( e ){
+    }
     var filepath = req.file.path;
     var filetype = req.file.mimetype;
     var originalname = req.file.originalname;
@@ -250,6 +255,29 @@ apiRoutes.post( '/collections/:collection_id/images', function( req, res ){
   }
 });
 
+//. コレクション画像削除
+apiRoutes.delete( '/collections/:collection_id/images/:image_id', function( req, res ){
+  var collection_id = req.params.collection_id;
+  var image_id = req.params.image_id;
+  if( collection_id && image_id ){
+    var db = cloudant.db.use( collection_id );
+    db.destroy( image_id, function( err, body ){
+      if( err ){
+        res.status( 400 );
+        res.write( JSON.stringify( { status: false, message: err }, 2, null ) );
+        res.end();
+      }else{
+        res.write( JSON.stringify( { status: true }, 2, null ) );
+        res.end();
+      }
+    });
+  }else{
+    res.status( 400 );
+    res.write( JSON.stringify( { status: false, message: 'parameter: collection_id and image_id required.' }, 2, null ) );
+    res.end();
+  }
+});
+
 //. コレクション画像情報取得
 apiRoutes.get( '/collections/:collection_id/images/:image_id', function( req, res ){
   var collection_id = req.params.collection_id;
@@ -274,7 +302,7 @@ apiRoutes.get( '/collections/:collection_id/images/:image_id', function( req, re
 });
 
 
-//. コレクション画像取得
+//. コレクション画像取得(New)
 apiRoutes.get( '/collections/:collection_id/images/:image_id/binary', function( req, res ){
   var collection_id = req.params.collection_id;
   var image_id = req.params.image_id;
@@ -293,6 +321,99 @@ apiRoutes.get( '/collections/:collection_id/images/:image_id/binary', function( 
   }else{
     res.status( 400 );
     res.write( JSON.stringify( { status: false, message: 'parameter: collection_id and image_id required.' }, 2, null ) );
+    res.end();
+  }
+});
+
+//. metadata 削除
+apiRoutes.delete( '/collections/:collection_id/images/:image_id/metadata', function( req, res ){
+  var collection_id = req.params.collection_id;
+  var image_id = req.params.image_id;
+  if( collection_id && image_id ){
+    var db = cloudant.db.use( collection_id );
+    db.get( image_id, { include_docs: true }, function( err, body ){
+      if( err ){
+        res.status( 400 );
+        res.write( JSON.stringify( { status: false, message: err }, 2, null ) );
+        res.end();
+      }else{
+        body.metadata = {};
+        db.insert( body, function( err, body ){
+          if( err ){
+            res.status( 400 );
+            res.write( JSON.stringify( { status: false, message: err }, 2, null ) );
+            res.end();
+          }else{
+            res.write( JSON.stringify( { status: true, metadata: {} }, 2, null ) );
+            res.end();
+          }
+        });
+      }
+    });
+  }else{
+    res.status( 400 );
+    res.write( JSON.stringify( { status: false, message: 'parameter: collection_id and image_id required.' }, 2, null ) );
+    res.end();
+  }
+});
+
+//. metadata 取得
+apiRoutes.get( '/collections/:collection_id/images/:image_id/metadata', function( req, res ){
+  var collection_id = req.params.collection_id;
+  var image_id = req.params.image_id;
+  if( collection_id && image_id ){
+    var db = cloudant.db.use( collection_id );
+    db.get( image_id, { include_docs: true }, function( err, body ){
+      if( err ){
+        res.status( 400 );
+        res.write( JSON.stringify( { status: false, message: err }, 2, null ) );
+        res.end();
+      }else{
+        var metadata = body.metadata;
+        res.write( JSON.stringify( { status: true, metadata: metadata }, 2, null ) );
+        res.end();
+      }
+    });
+  }else{
+    res.status( 400 );
+    res.write( JSON.stringify( { status: false, message: 'parameter: collection_id and image_id required.' }, 2, null ) );
+    res.end();
+  }
+});
+
+//. metadata 更新
+apiRoutes.put( '/collections/:collection_id/images/:image_id/metadata', function( req, res ){
+  var collection_id = req.params.collection_id;
+  var image_id = req.params.image_id;
+  var metadata = {};
+  try{
+    metadata = ( req.body.metadata ? JSON.parse( req.body.metadata ) : {} );
+  }catch( e ){
+  }
+  if( collection_id && image_id && metadata ){
+    var db = cloudant.db.use( collection_id );
+    db.get( image_id, { include_docs: true }, function( err, body ){
+      if( err ){
+        res.status( 400 );
+        res.write( JSON.stringify( { status: false, message: err }, 2, null ) );
+        res.end();
+      }else{
+        body.metadata = metadata;
+        db.insert( body, function( err, body ){
+          if( err ){
+            res.status( 400 );
+            res.write( JSON.stringify( { status: false, message: err }, 2, null ) );
+            res.end();
+          }else{
+            res.write( JSON.stringify( { status: true, metadata: metadata }, 2, null ) );
+            res.end();
+          }
+        });
+      }
+    });
+  }else{
+    res.status( 400 );
+    res.write( JSON.stringify( { status: false, message: 'parameter: collection_id, image_id, and metadata required.' }, 2, null ) );
     res.end();
   }
 });

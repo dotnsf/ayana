@@ -60,8 +60,15 @@ In current code, I use "Color-Histogram" approach to find/judge similarity. See 
 
 - GET /v3/collections/{collection_id}/images/{image_id}
 
-- GET /v3/collections/{collection_id}/images/{image_id}/binary
+- GET /v3/collections/{collection_id}/images/{image_id}/binary (new!)
 
+- DELETE /v3/collections/{collection_id}/images/{image_id}/metadata
+
+- GET /v3/collections/{collection_id}/images/{image_id}/metadata
+
+- PUT /v3/collections/{collection_id}/images/{image_id}/metadata
+
+See Watson API Explorer(https://watson-api-explorer.mybluemix.net/apis/visual-recognition-v3#!/) for details.
 
 ## Diffence from original
 
@@ -69,7 +76,7 @@ In current code, I use "Color-Histogram" approach to find/judge similarity. See 
 
 - No 'version' parameter required.
 
-- GET /collections/{collection_id}/images/{image_id}/binary newly added to get image binary
+- GET /v3/collections/{collection_id}/images/{image_id}/binary newly added to get image binary.
 
 - HTTP Response include 'status' which indicate success(true) or fail(false).
 
@@ -79,7 +86,7 @@ In current code, I use "Color-Histogram" approach to find/judge similarity. See 
 
     - https://www.ibm.com/blogs/bluemix/2017/08/visual-recognition-api-similarity-search-update
 
-- Original API
+- Original API(Watson API Explorer)
 
     - https://watson-api-explorer.mybluemix.net/apis/visual-recognition-v3#!/
 
