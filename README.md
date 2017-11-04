@@ -104,6 +104,8 @@ See Watson API Explorer(https://watson-api-explorer.mybluemix.net/apis/visual-re
 
 - No 'version' parameter required.
 
+- POST /v3/collections/{collection_id}/images have new save_image parameter. If this value would be true, you can save image itself, and retrieve it with following new API.
+
 - GET /v3/collections/{collection_id}/images/{image_id}/binary newly added to get image binary.
 
 - HTTP Response include 'status' which indicate success(true) or fail(false).

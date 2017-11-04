@@ -189,6 +189,7 @@ apiRoutes.get( '/collections/:collection_id/images', function( req, res ){
 apiRoutes.post( '/collections/:collection_id/images', function( req, res ){
   var collection_id = req.params.collection_id;
   if( collection_id ){
+    var save_image = ( req.params.save_image ? true : false );
     var metadata = {};
     try{
       metadata = ( req.body.metadata ? JSON.parse( req.body.metadata ) : {} );
@@ -217,14 +218,18 @@ apiRoutes.post( '/collections/:collection_id/images', function( req, res ){
       filetype: filetype,
       datetime: ymdhns,
       metadata: metadata,
-      colorhistogram: colorhistogram,
-      _attachments: {
+      colorhistogram: colorhistogram
+    };
+
+    if( save_image ){
+      var attachments = {
         file: {
           content_type: filetype,
           data: fileimage64
         }
-      }
-    };
+      };
+      param._attachments = attachment;
+    }
 
     var db = cloudant.db.use( collection_id );
     db.insert( param, function( err, body, header ){
