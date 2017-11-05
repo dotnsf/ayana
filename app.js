@@ -103,7 +103,7 @@ apiRoutes.get( '/collections', function( req, res ){
 apiRoutes.get( '/collections/:collection_id', function( req, res ){
   var collection_id = req.params.collection_id;
   if( collection_id ){
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.info( function( err, body ){
       if( err ){
         res.status( 400 );
@@ -156,7 +156,7 @@ apiRoutes.delete( '/collections/:collection_id', function( req, res ){
 apiRoutes.get( '/collections/:collection_id/images', function( req, res ){
   var collection_id = req.params.collection_id;
   if( collection_id ){
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.list( { include_docs: true }, function( err, body ){
       if( err ){
         res.status( 400 );
@@ -231,7 +231,7 @@ apiRoutes.post( '/collections/:collection_id/images', function( req, res ){
       param._attachments = attachment;
     }
 
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.insert( param, function( err, body, header ){
       if( err ){
         res.status( 400 );
@@ -265,7 +265,7 @@ apiRoutes.delete( '/collections/:collection_id/images/:image_id', function( req,
   var collection_id = req.params.collection_id;
   var image_id = req.params.image_id;
   if( collection_id && image_id ){
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.destroy( image_id, function( err, body ){
       if( err ){
         res.status( 400 );
@@ -288,7 +288,7 @@ apiRoutes.get( '/collections/:collection_id/images/:image_id', function( req, re
   var collection_id = req.params.collection_id;
   var image_id = req.params.image_id;
   if( collection_id && image_id ){
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.get( image_id, { include_docs: true }, function( err, body ){
       if( err ){
         res.status( 400 );
@@ -312,7 +312,7 @@ apiRoutes.get( '/collections/:collection_id/images/:image_id/binary', function( 
   var collection_id = req.params.collection_id;
   var image_id = req.params.image_id;
   if( collection_id && image_id ){
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.attachment.get( image_id, "file", function( err, body, head ){
       if( err ){
         res.status( 400 );
@@ -335,7 +335,7 @@ apiRoutes.delete( '/collections/:collection_id/images/:image_id/metadata', funct
   var collection_id = req.params.collection_id;
   var image_id = req.params.image_id;
   if( collection_id && image_id ){
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.get( image_id, { include_docs: true }, function( err, body ){
       if( err ){
         res.status( 400 );
@@ -367,7 +367,7 @@ apiRoutes.get( '/collections/:collection_id/images/:image_id/metadata', function
   var collection_id = req.params.collection_id;
   var image_id = req.params.image_id;
   if( collection_id && image_id ){
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.get( image_id, { include_docs: true }, function( err, body ){
       if( err ){
         res.status( 400 );
@@ -396,7 +396,7 @@ apiRoutes.put( '/collections/:collection_id/images/:image_id/metadata', function
   }catch( e ){
   }
   if( collection_id && image_id && metadata ){
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.get( image_id, { include_docs: true }, function( err, body ){
       if( err ){
         res.status( 400 );
@@ -432,7 +432,7 @@ apiRoutes.post( '/collections/:collection_id/find_similar', function( req, res )
     var _colorhistogram = getColorHistogram( fileimage );
     var limit = req.body.limit || 10;
     
-    var db = cloudant.db.use( collection_id );
+    var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.list( { include_docs: true }, function( err, body ){
       if( err ){
         res.status( 400 );
