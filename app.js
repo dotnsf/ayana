@@ -430,7 +430,10 @@ apiRoutes.post( '/collections/:collection_id/find_similar', function( req, res )
     var filepath = req.file.path;
     var fileimage = fs.readFileSync( filepath );
     var _colorhistogram = getColorHistogram( fileimage );
-    var limit = req.body.limit || 10;
+    var limit = req.body.limit;
+    if( !limit ){
+      limit = req.query.limit || 10;
+    };
     
     var db = cloudant.db.use( settings.cloudant_db_prefix + collection_id );
     db.list( { include_docs: true }, function( err, body ){
@@ -469,10 +472,9 @@ apiRoutes.post( '/collections/:collection_id/find_similar', function( req, res )
              metadata: doc.doc.metadata,
              score: histogramIntersection
            };
-           var howMany = 0;
-           if( ranks.length >= limit ){ howMany = ranks.length - limit + 1; }
-           ranks.splice( idx, howMany, similar_image );
+           ranks.splice( idx, 0, similar_image );
         });
+        ranks = ranks.slice( 0, limit );
         res.write( JSON.stringify( { status: true, similar_images: ranks }, 2, null ) );
         res.end();
       }
