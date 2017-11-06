@@ -453,10 +453,12 @@ apiRoutes.post( '/collections/:collection_id/find_similar', function( req, res )
              histogramIntersection += Math.min( colorhistogram[i], _colorhistogram[i] );
            }
 
+           //. histogramIntersection の値が大きいものから順にソートする
+
            //. 挿入位置確認
            var idx = -1;
            for( var i = 0; i < ranks.length && idx == -1; i ++ ){
-             if( ranks[i].histogramIntersection < histogramIntersection ){
+             if( ranks[i].score < histogramIntersection ){
                idx = i;
              }
            }
@@ -474,6 +476,8 @@ apiRoutes.post( '/collections/:collection_id/find_similar', function( req, res )
            };
            ranks.splice( idx, 0, similar_image );
         });
+
+        //. 最初の limit 個を取り出したい
         ranks = ranks.slice( 0, limit );
         res.write( JSON.stringify( { status: true, similar_images: ranks }, 2, null ) );
         res.end();
